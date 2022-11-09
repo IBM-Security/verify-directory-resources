@@ -1,0 +1,43 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+#
+# Create the clean job.
+#
+
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: isvd-clean
+  labels:
+    app: isvd-clean
+
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 1
+
+  template: 
+
+    spec:
+      # We use a volume to store the configuration for the 
+      # environment.
+      volumes:
+      - name: data-volume 
+        persistentVolumeClaim: 
+          claimName: replica-xxx-pvc
+
+      containers:
+      - name: volume-init
+        image: registry.hub.docker.com/library/alpine:3.12.0
+        command: [ "/bin/sh", "-c", "rm -rf /var/isvd/data/*" ]
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 0
+          runAsNonRoot: false
+        volumeMounts:
+        - name: data-volume
+          mountPath: /var/isvd/data
+
+      restartPolicy: Never

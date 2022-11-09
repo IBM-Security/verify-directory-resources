@@ -1,0 +1,8 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+general: 
+  license-key: $LICENSE_KEY
+  key-stash: "B64:GAAAAHM1Q2lqMCtLYVppZUhOemprZi9XSGc9PThOcHIiXmA9RlB0Rji/nsd3MpTYvRzUn5joE804v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I4v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I/+VsYL0fIEQ=="
+

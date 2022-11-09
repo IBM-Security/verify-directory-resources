@@ -1,0 +1,159 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+#
+# Create the ConfigMap for the deployment.
+#
+
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: isvd-replica-xxx-config 
+  namespace: default 
+data: 
+  config.yaml: | 
+    general: 
+      id: $SERVER_ID
+
+      ports:
+        ldap: $LDAP_PORT
+
+      ssl:
+        cert-label: server-key
+
+      json-logging: false
+
+      license-key: --license-key--
+
+      key-stash: "B64:GAAAAHM1Q2lqMCtLYVppZUhOemprZi9XSGc9PThOcHIiXmA9RlB0Rji/nsd3MpTYvRzUn5joE804v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I4v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I/+VsYL0fIEQ=="
+
+      admin: 
+        dn: cn=root
+        pwd: passw0rd1
+
+    server:
+      replication:
+        admin:
+          dn: cn=replcred
+          pwd: passw0rd2
+
+      suffixes:
+        - dn: o=sample
+          object-classes:
+          - organization
+
+    keyfile:
+      keys:
+        - label: 'server-key'
+          key: "B64:LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUpRd0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQ1Mwd2dna3BBZ0VBQW9JQ0FRQ21QQUtjYU9vek5ORWYKdzJBbytxS0NObVVkYXB5V0x0S3hYeTR0WHlGbnFqdVVMcHdjSVB4dVIrNkNsS2pHbkd2dnUxNVJIdHY4SE8wVApUYjBtQW9qeUh5MUZ6dm5DREwrdFdyd28vMFJEVDlJdFN0c29NclNVaFNBRU5uWE5FN24wSStSWWxIbXdoVDdjClFrVXl6aW9zZVhTR3FwemgrblZ5SzZuSXh2d01sbklwODJKcTlCKzJsdXBFcGdHNEs4QysrVlMwUUVJU1hmVFUKODVqWEs3empwaHhENXpKOFpuQ0dwa09QdFVGMm16VXlrSlZFVWJxODhaanoyVVlRZ1ZUdk1QbVdXbXVPbkxScgpkWDdzYmtpemJRbk1EbGIxVUkzV1ZEa2psM09DZU55RWkzNXcrYnBKSEhPTGwwNkZ2cXFpWEJJR3ZmTVQvVEFWCjBZUHFoRkRFQnM5eE5VSjZHZlVTNlc4NGdwaTl3V0x5bmdiZVdWTitFS0IxckZYenhWbysvd1kybVVEV0xOV1kKOTJhMVdkdFFLZU5JdFlFTnUveWtROWFBSm1MSWgyRklJUnhHRWd3OFFFeWdiaUo1VzF0RmlRVnVNK3VNaTlqUgpBZ0xxUWJvRHlxeW5Bd3MvK2NGVkI5WGR1dWhUKzhtdGFmaFlscHNxUzNWU2c3UzlaTmFCNUVxZldWTkJRTXNKCnJGWWwybUtOYzIzOGsyOHhteENqZTFKckNUaW9RdUtkajRvT0EvcXcyd0ZNOUdRRnR3MVhVSHoyc1FBMXI2Q28Kam41dWg1TkFhUkdqNkZSSERkUFNnM01qRUZWNzhDVjBidUZvREJxUG5UN2NwNnV1ZjhMYjJyRW9aWFc0M2dzWgpPQW45RVc3Y3NUcGMvNTZzTU43Z3VNaitSMFoxT3dJREFRQUJBb0lDQVFDSTdpVzRjVE41dXFnSVlnZHp1Z0RqCkFhdUk3NmpNalFWQTFnWlRtV2tLMjA3NFlPeDJ2elV3SWxCMWY3OEcyeEtPQnVsS0tRRk1Td2QrUHlydmhHY0sKQ21SZ2ZIMS9Pc0VwS3ZTVFVMSUtRRllBdVFpTnREYkxvRjBmR3owdUVIRzhpVlF2SXg2YUtTZitoeGc1SVZuYwpDSy9UdmZZOHJ2TFBlT2dDV3VhRDkrbFNaUWxNMElyTy9NRThpd0lma3VyU1pNOUJLeTFCcytOWkJzOS9icWZKClhhc3F3K2J5VWUrZStwWHNhb0hpRVRkZ3ozZ2xMcTJEdGY4bjNuRzRadEJ2dHdmZ3NkcW5QcTNmVm9tV2Q4R3IKQ3NabkwraXhhZ2xyNHpTdC9MTkpaZ1UvcVNnZUo1Y3JZaVJMZC9kV2RCaGFaVHowRU1PS1U2U29WRTAxZ0lpRgpuRzZLRXQvOGZHTWpQZ2pnaHlGZldoQ012akxuTXZaL1N3Snl0LzVwNVV6OFMyZC9NZjd6clgrYmt6YWhBd0xKCmF2UXRoMjBNaUxEQWJaWXdEY0xhTTVkbmhON0l5bThpTy9teGJ1TXYzVHR1R3pmQ0UzT2RWcEdBNWlOd2pXcVoKWWZPT3U3cUZhWlhtT0wySE9zNUV5L0RabDY1UWdzVEVDWG93ZlhBZXloTGR6YnZHMlFZTXhXRmtjLy9kQnlkYgo1RmRCd2tLL042WHhHMkhqT3VZYU5FUW50MDBVbjNHZlp4aHNheGFVUzJxSFZJbXlOVE43WUIyQlR0dExNQ3kzCmRqWSszT3VmblNLR0duWmNLQWtZQ2dsQ1VvT2NnUjdzTVRZN1ZhMVNnd0RoN1pSNVZiVnRkN0tmWGEvSStGenAKRExJUWEyakRIVEtCUy9BYWwycjZBUUtDQVFFQTF5TkNnYk5VeTdtT2ZHK0pHQTk4RGR3SS83cEI5cU93SlA0cwplTlBQLzlZWHdWR0dYemYzWUs1ME56UnEzN0lHZUVBUldEd1RKVTZ1T3B5S2JXWHp2bFRHcUIxUXcyVHhNc3lqCldUSTMzclB5K3FaeGY3QnVBUXJISG0wOFBvQ25IUGNzQlBYUXZxS0greTZZWi9FbXFxcEhHK0hGUlo0WndjSzUKeTlFeWpRamZYaXBTUGpiQlV1ZW83VjJ1cjNWK3FpSFlXR21NV080TDJUZGFKWGNwMFlDQ055S1RXcVhDUkw2MQpJSnpISEtQNGRYRkY3ejdPeUNlN0h5M2tYdU5memlxV0ZpVXBMSHBhQW8rVTllTGlVdTEralBSTFNhRnRJczQ4CkcwcUJPQ1B2azBqclc4eFFCdUptZmMvWmM4L0tZSzhJMEVVWGE1Y0hacDlNN3NNN0dRS0NBUUVBeGM3bTZ1WlUKRDdhOUxKbVFyK0JVWTFRTFkyd21KVDFNbjVsK3kzcXg4VU5aV3F2OUN0bC9jTFZ3MXQ5WEdqejB6UjJQcy9HUwovaTljQk43RkpQRnBpMXI3cGVJMmcvU2YrclBTdEFacXdyVTZ4cVJaWG9xMUxpcnpBN3dkeFh4QVBmWGsvZ296CkhuWkk5V3NHMXdsamhNUXNKUlFienlSOHFzbUtDZFNKZ1RrSkdtcEJ4eUlXUWdxaVdnbUlTREZVaVFSVjRoTnkKbWRKR2w5azJzTGxaNWU4WnNwaVcwOHF4eFRCeFJEVzRjcWkyYTBjazJZMlR1cGFwMlJsN3NEeXA5akMwTXN4WQpReERFaXpsOVJFNHVGZHBGMzhZS3JkdG5tV0tiVlJvZW9tMGdRcGpENU41YTBUMkh0SXBoOGg0VUZ3My9oV3g3CkdNcXAxTHhuR3VCUmN3S0NBUUJoN2VMd056bDZJdFVCUDZRZ0Y2eFlncmgxNzhybkFrdkVDdzhqVVFkMVpYY2EKd0lseC9uL1V1cFNjTEhnWnEyZldoUk5nSHJoNFd3QmtIYTNGYm9zdE1GbmRYTHJPdHJ3MGE0SlByOVJPdzRydgpIYVM4Z3dzUDNtQVZNWlFpdjExU2loQzNrVTJiK1UvOHZwRVJmMndpYzdBNnVPS2JkZ1F6ZHZnc0Z1WHozUDRRClZ5Tm92blB4MFJITU9zQ3hqY0pDbjNWamlXZ2hjdnBodmhpQ3hXTjd3Z3VFSFhFRjZqNHNITU5HUFJkRnFqNEcKOTdEbDNxa3g0eVFDWlZsMjkvazhWNVpLTGxBM3R0b1NJRm1tTThqaUJzbDhVQmVWUkszeEVmKzZUSWZWamtZWAp2VEdsYjdOZDd1RElsRHhmdzA1VUJGajJ0UHljTlB0aGMxSUp2VVRCQW9JQkFRQ0NiemRucDYvQW1PQlBXNGZECjRhbmp3WlNzMzdDYmw3dEI5b1pjaUxCemhkU1M3SncwSGsxaHRkTU5iVUpUWStTTXFMU01sSHc0TG1TQU5hRk0KQmdCeHl2SHJaYXBMQXZERzhQSzhrUXF2RDdBTk1teFg0aUVzcTFlSm0rOEp2Uy9qYTVTdlMyeC81c0dmU3c2OApsMDFQUzhoTVB1RkRpeXpGdFpYWGU1V2NaMDZ3WTJheWQ3Q3pwYTErcjVCMUFrcGErMGZpaHE1bjdmZHN3K2ZEClNzV1QwRUZpdWltaXlLTEdnM1g4NDJ1WDk5WXFFVVNrVEM0Z3VKNlJNTE9WOTdxZlEyaGZvczJFazdiMmsxY2QKeG11dkx6b3FINzRFL0l0bzRsUEpIeXNhTWRrMjhPTWp0TmV2NStIblUrVFlNYXRQdElSTXA4YllCek5MdTF4RgpwYXN2QW9JQkFDRHNQcjZNK3dyQUJVMVQyOEwvYmh0S0E3ekJaM1BsYUsySExjYmdwRGlWS21yK1h4ZUhFNnRNCjdvRTBUajdGcFJWWEp3amFrMjFQR2N0NWl3R1lwU1NKb09HOUIwb05kWTlHY1llZjVvYmd1QVF0YzJ5V1hJSGoKaFZ2OXNFV0orSzJsU1hTTXJSMytuT1AvTmpicWo2dTRITExSZjlIdmlzMUFaUWcvTzlYWk5mNDJ2OVlML0NVNwpsN3dReG1NUGlHNXhtSmdoeVkybEZ3VktBTmxnYmxHWkx3czJiUzNvZ0xHZE04N1Zybm9RT245d29GS0RuVDZFCkIzOE9YcVh5YVRHY0FyZmpGeU1DRFBCNXhkN1h1cDJRZ3FCUFFHMC9RTWVnT0Nyd2VwTG5uSzVwZmxkcXRzWXIKcmN6dmk2UTUzWlcrWnlKQ204QU42QWZSa2VoakhKQT0KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQotLS0tLUJFR0lOIENFUlRJRklDQVRFLS0tLS0KTUlJRlNEQ0NBekFDQ1FDV3lXS1hibXdPNWpBTkJna3Foa2lHOXcwQkFRc0ZBREJtTVFzd0NRWURWUVFHRXdKQgpWVEVUTUJFR0ExVUVDQXdLVVhWbFpXNXpiR0Z1WkRFUU1BNEdBMVVFQnd3SFFuVnVaR0ZzYkRFUk1BOEdBMVVFCkNnd0lVMlZqZFhKcGRIa3hEREFLQmdOVkJBc01BMGxDVFRFUE1BMEdBMVVFQXd3R2RHVnpkR1Z5TUI0WERUSXkKTURZek1EQXdNVFF6TTFvWERUSXpNRFl6TURBd01UUXpNMW93WmpFTE1Ba0dBMVVFQmhNQ1FWVXhFekFSQmdOVgpCQWdNQ2xGMVpXVnVjMnhoYm1ReEVEQU9CZ05WQkFjTUIwSjFibVJoYkd3eEVUQVBCZ05WQkFvTUNGTmxZM1Z5CmFYUjVNUXd3Q2dZRFZRUUxEQU5KUWsweER6QU5CZ05WQkFNTUJuUmxjM1JsY2pDQ0FpSXdEUVlKS29aSWh2Y04KQVFFQkJRQURnZ0lQQURDQ0Fnb0NnZ0lCQUtZOEFweG82ak0wMFIvRFlDajZvb0kyWlIxcW5KWXUwckZmTGkxZgpJV2VxTzVRdW5Cd2cvRzVIN29LVXFNYWNhKys3WGxFZTIvd2M3Uk5OdlNZQ2lQSWZMVVhPK2NJTXY2MWF2Q2ovClJFTlAwaTFLMnlneXRKU0ZJQVEyZGMwVHVmUWo1RmlVZWJDRlB0eENSVExPS2l4NWRJYXFuT0g2ZFhJcnFjakcKL0F5V2NpbnpZbXIwSDdhVzZrU21BYmdyd0w3NVZMUkFRaEpkOU5Uem1OY3J2T09tSEVQbk1ueG1jSWFtUTQrMQpRWGFiTlRLUWxVUlJ1cnp4bVBQWlJoQ0JWTzh3K1paYWE0NmN0R3QxZnV4dVNMTnRDY3dPVnZWUWpkWlVPU09YCmM0SjQzSVNMZm5ENXVra2NjNHVYVG9XK3FxSmNFZ2E5OHhQOU1CWFJnK3FFVU1RR3ozRTFRbm9aOVJMcGJ6aUMKbUwzQll2S2VCdDVaVTM0UW9IV3NWZlBGV2o3L0JqYVpRTllzMVpqM1pyVloyMUFwNDBpMWdRMjcvS1JEMW9BbQpZc2lIWVVnaEhFWVNERHhBVEtCdUlubGJXMFdKQlc0ejY0eUwyTkVDQXVwQnVnUEtyS2NEQ3ovNXdWVUgxZDI2CjZGUDd5YTFwK0ZpV215cExkVktEdEwxazFvSGtTcDlaVTBGQXl3bXNWaVhhWW8xemJmeVRiekdiRUtON1Vtc0oKT0toQzRwMlBpZzREK3JEYkFVejBaQVczRFZkUWZQYXhBRFd2b0tpT2ZtNkhrMEJwRWFQb1ZFY04wOUtEY3lNUQpWWHZ3SlhSdTRXZ01HbytkUHR5bnE2NS93dHZhc1NobGRiamVDeGs0Q2YwUmJ0eXhPbHovbnF3dzN1QzR5UDVIClJuVTdBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFFalVwUGxBc3BOWC9ISmw0RWgzcnl1aVFSVVIKYkVLZlBaOFlVYytoVHR3RGx1d3VBYUFYT0labkV3UENCdGJ1M3dPeXpuM2c4ay9heGZGczJHaTVodzdmazY5MApLVzZPUnA0SnBONmo3R2FnWTk4OThkK1N3ekI4aXFrMFpvRTZLTS95Zm5JQld4dmRFaEhMRE50Z3VGcGlpQkxmCmFXSHFibVcrbmlzdUxJTDU0bWlRQU9TNEtUcDBFQ0o0eHZnbU9UL0dQYWsxdWZHVE9TRStpOEljd3plZEFXMisKdHFSRklvbUpkekR3VG1wbjhIemU2VW1jcFRZWUp5T3lnVHBQY1NxeklLZDlMR3I4SXV4ZDl1Y3Jvc1NaNmRrRwpMQ1IxMkFOUld4aWlHQkh2RXFzRm1MUzZwVmE4Z3FwSUNiQ2xDT0Z1bDAyU25ubml6dXFucmF1QmEwbjJJZ1NNCkNsT09Bek5GL0hmYkRLOXVjbGlCTHorMW5TKzExRWhjaWo2NGlZMnRNNldrOWgxSDJLc2tJNmpHWThNMXBzdjYKWE1iY1c4aE54WFNRNG4raHZqaDVrMUthdmdSK0FGU01ZRjQ0MjZDMHpobEQwRE4yUGNzbTJpZnZ3UHNRdzh3OQpkZ2FDMVZsYkgwT0t1WUg4bG1TLzlCemZtV3BpMkdBd0JuM3ZBYmNCUlQ5eWNOaVJHUWErbkZqMlNISEhQMHNHCldxYW5EM21NNTRWREE3Z2FYMFdvcU9LWnJpaTBEdlp1Q09zR01LNGtXQUtxalhSUHRscWxBbCs1TktZVW1oYkgKR2ZjUnBvZUZsb0dCTzNVTHJ0Mm1JY1BTWGdia0lBMXo5OW43RVdCWjdJWGdFUEpZMVUrM1REalVNZEpQU0tNcApOYVdUTjhaWTF2N2h6cVVQCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+
+
+#
+# Create the deployment, and pod.
+#
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isvd-replica-xxx
+
+spec:
+  selector:
+    matchLabels:
+      app: isvd-replica-xxx
+
+  template:
+    metadata:
+      labels:
+        app: isvd-replica-xxx
+
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+
+      imagePullSecrets:
+      - name: repo-creds
+
+      containers:
+      - name: isvd-replica
+        image: --image-repo--
+
+        env:
+        - name: YAML_CONFIG_FILE
+          value: /var/isvd/config/config.yaml
+        - name: SERVER_ID
+          value: isvd-replica-xxx
+        - name: LDAP_PORT
+          value: "--port--"
+
+        volumeMounts:
+        - name: config-volume
+          mountPath: /var/isvd/config
+        - name: isvd-data
+          mountPath: /var/isvd/data
+
+        # The liveness, readiness and startup probes are used by
+        # Kubernetes to monitor the health of the container.  Our 
+        # health is governed by the health_check.sh script which is
+        # provided by the container.
+        livenessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh 
+            - livenessProbe
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        readinessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+
+        livenessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh 
+            - startupProbe
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: isvd-replica-xxx-config
+      - name: isvd-data
+        persistentVolumeClaim:
+          claimName: replica-xxx-pvc
+
+#
+# Create the service (as a cluster ip).
+#
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: isvd-replica-xxx
+
+spec:
+  ports:
+  - port: 9636
+    name: isvd-replica-xxx-ldaps
+    protocol: TCP
+    targetPort: 9636
+  - port: 9389
+    name: isvd-replica-xxx-ldap
+    protocol: TCP
+    targetPort: 9389
+
+  selector:
+    app: isvd-replica-xxx
+
+  type: ClusterIP 
+

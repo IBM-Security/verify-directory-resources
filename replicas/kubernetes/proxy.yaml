@@ -1,0 +1,110 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+#
+# Create the deployment and service definitions for the proxy.
+#
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isvd-proxy
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: isvd-proxy
+
+  template:
+    metadata:
+      labels:
+        app: isvd-proxy
+
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+
+      imagePullSecrets:
+      - name: repo-creds
+
+      containers:
+      - name: isvd-proxy
+        image: --image-repo--
+
+        env:
+        - name: YAML_CONFIG_FILE
+          value: /var/isvd/config/config.yaml
+        - name: LDAP_PORT
+          value: "--port--"
+
+        volumeMounts:
+        - name: config-volume
+          mountPath: /var/isvd/config
+
+        # The liveness, readiness and startup probes are used by
+        # Kubernetes to monitor the health of the container.  Our 
+        # health is governed by the health_check.sh script which is
+        # provided by the container.
+        livenessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh 
+            - livenessProbe
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        readinessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+
+        livenessProbe:
+          exec:
+            command:
+            - /sbin/health_check.sh 
+            - startupProbe
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: isvd-proxy-config
+
+#
+# Create the service (as a node-port).
+#
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: isvd-proxy
+
+spec:
+  ports:
+  - port: 9636
+    targetPort: 9636
+    nodePort: 30636
+    name: isvd-proxy-ldaps
+    protocol: TCP
+  - port: 9389
+    targetPort: 9389
+    nodePort: 30389
+    name: isvd-proxy-ldap
+    protocol: TCP
+
+  selector:
+    app: isvd-proxy
+
+  type: NodePort
+

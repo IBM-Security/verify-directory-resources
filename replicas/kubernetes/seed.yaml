@@ -1,0 +1,88 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+#
+# Create the ConfigMap for the seed job.
+#
+
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: isvd-seed-config 
+  namespace: default 
+data: 
+  config.yaml: |
+    general: 
+      license-key: --license-key--
+      key-stash: "B64:GAAAAHM1Q2lqMCtLYVppZUhOemprZi9XSGc9PThOcHIiXmA9RlB0Rji/nsd3MpTYvRzUn5joE804v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I4v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I/+VsYL0fIEQ=="
+    seed:
+      replica:
+        clean: true
+
+---
+
+#
+# Create the seed job.
+#
+
+# 
+# The deployment description of the Verify Directory seed container.
+#
+
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: isvd-seed
+  labels:
+    app: isvd-seed
+
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 1
+
+  template: 
+
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+
+      imagePullSecrets:
+      - name: repo-creds
+
+      # We use a volume to store the configuration for the 
+      # environment.
+      volumes:
+      - name: config-volume
+        configMap:
+          name: isvd-seed-config
+      - name: principal-volume
+        persistentVolumeClaim:
+          claimName: principal-xxx-pvc
+      - name: data-volume 
+        persistentVolumeClaim: 
+          claimName: replica-xxx-pvc
+
+      containers:
+      - name: isvd-seed
+
+        # The fully qualified name of the image.
+        image: --image-repo--
+
+        # Environment definition.
+        env:
+        - name: YAML_CONFIG_FILE
+          value: /var/isvd/config/config.yaml  
+
+        # The configuration volume.
+        volumeMounts:
+        - name: config-volume
+          mountPath: /var/isvd/config
+        - name: data-volume
+          mountPath: /var/isvd/data
+        - name: principal-volume
+          mountPath: /var/isvd/source
+
+      restartPolicy: Never

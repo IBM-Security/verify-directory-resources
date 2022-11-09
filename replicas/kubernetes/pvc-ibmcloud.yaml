@@ -1,0 +1,22 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+# The following PVC definition is an example of how to create a PVC in an
+# IBM cloud environment.  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: replica-xxx-pvc
+  labels:
+    billingType: "hourly"
+    region: au-syd
+    zone: syd04
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+  storageClassName: ibmc-block-silver
+

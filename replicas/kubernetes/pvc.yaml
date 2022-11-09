@@ -1,0 +1,36 @@
+##############################################################################
+# Copyright contributors to the IBM Security Verify Directory project.
+##############################################################################
+
+# The following PVC definition uses the host path persistent volume type -
+# which is strongly discouraged in a real environment!
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: replica-xxx-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 200Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  hostPath:
+    path: "/var/k8s/data/replica-xxx"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: replica-xxx-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+
