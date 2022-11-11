@@ -24,7 +24,9 @@ data:
 
       json-logging: false
 
-      license-key: --license-key--
+      license:
+        accept: limited
+        key: --license-key--
 
       key-stash: "B64:GAAAAHM1Q2lqMCtLYVppZUhOemprZi9XSGc9PThOcHIiXmA9RlB0Rji/nsd3MpTYvRzUn5joE804v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I4v57HdzKU2L0c1J+Y6BPNnceUEUr3I0I/+VsYL0fIEQ=="
 
